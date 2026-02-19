@@ -15,9 +15,10 @@
       :root {
         color-scheme: light dark;
         --ink: #0f172a;
-        --sunset: #ff6b6b;
-        --sea: #3b82f6;
         --moss: #16a34a;
+        --accent-invert: #a3168a;
+        --sunset: color-mix(in srgb, var(--accent-invert) 72%, white 28%);
+        --sea: color-mix(in srgb, var(--moss) 70%, white 30%);
         --accent-text: #ffffff;
         --sand: #f8f5f0;
         --text-strong: #0f172a;
@@ -39,8 +40,16 @@
         }
       }
 
+      @supports (color: hsl(from white h s l)) {
+        :root {
+          --accent-invert: hsl(from var(--moss) calc(h + 180) s l);
+        }
+      }
+
       @media (prefers-color-scheme: dark) {
         :root {
+          --sunset: color-mix(in srgb, var(--accent-invert) 62%, black 38%);
+          --sea: color-mix(in srgb, var(--moss) 58%, black 42%);
           --sand: rgba(15, 23, 42, 0.9);
           --text-strong: #f8fafc;
           --text-main: #cbd5e1;
@@ -57,15 +66,18 @@
 
       html,
       body {
-        min-height: 100%;
+        height: 100%;
+        overflow: hidden;
+        overscroll-behavior: none;
+        -webkit-overflow-scrolling: auto;
         background: radial-gradient(
             1200px 600px at 10% -10%,
-            rgba(255, 107, 107, 0.18),
+            color-mix(in srgb, var(--sunset) 18%, transparent),
             transparent 60%
           ),
           radial-gradient(
             900px 500px at 90% 10%,
-            rgba(59, 130, 246, 0.18),
+            color-mix(in srgb, var(--sea) 18%, transparent),
             transparent 55%
           ),
           linear-gradient(180deg, var(--bg-grad-1) 0%, var(--bg-grad-2) 55%, var(--bg-grad-3) 100%);
@@ -138,7 +150,7 @@
     </style>
   </head>
   <body class="min-h-screen">
-    <div class="relative overflow-hidden">
+    <div class="relative h-full overflow-x-hidden overflow-y-auto overscroll-none">
       <div class="absolute -top-40 -left-32 h-96 w-96 rounded-full bg-[color:var(--sunset)] opacity-20 blur-3xl"></div>
       <div class="absolute top-10 -right-40 h-[28rem] w-[28rem] rounded-full bg-[color:var(--sea)] opacity-20 blur-3xl"></div>
       <div class="absolute bottom-[-8rem] left-1/2 h-80 w-80 -translate-x-1/2 rounded-full bg-[color:var(--moss)] opacity-10 blur-3xl"></div>
